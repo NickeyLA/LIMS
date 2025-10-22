@@ -1,0 +1,190 @@
+aside {
+    padding: 20px;
+    background-color: #e8e8e8; /* Белый фон боковой панели */
+    color: #333333; /* Темно-серый текст */
+    height: 100vh; /* Высота панели на весь экран */
+}
+
+aside img {
+    max-width: 180px;
+    border-radius: 10px; /* Скругленные края изображения */
+    margin: 10px;
+}
+
+aside h3 {
+    font-size: 1.5em;
+    margin-bottom: 15px;
+    color: #f57f29; /* Оранжевый цвет для заголовка */
+}
+
+aside ul {
+    padding: 0;
+    list-style: none; /* Убираем маркеры списка */
+}
+
+aside ul a {
+    text-decoration: none;
+    color: #333333; /* Темно-серый текст */
+    display: flex;
+    align-items: center;
+    padding: 10px;
+    border-radius: 5px;
+    margin-bottom: 10px;
+    transition: background-color 0.3s ease;
+}
+
+aside ul a:hover {
+    background-color: #f57f29; /* Оранжевый фон при наведении */
+    color: white; /* Белый текст при наведении */
+}
+
+aside ul a i {
+    margin-right: 10px; /* Отступ между иконкой и текстом */
+}
+
+body {
+    background-color: #e8e8e8; /* Светлый фон страницы */
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+}
+
+.custom-main {
+    padding: 20px;
+    background-color: #f6f6f6; /* Белый фон */
+    flex-grow: 1;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 10px;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 1.5em;
+    color: #333; /* Темно-серый текст */
+}
+
+label {
+    display: block;
+    margin-bottom: 5px;
+    font-weight: bold;
+    color: #444; /* Темно-серый текст */
+}
+
+.buttons {
+    display: flex;
+    justify-content: flex-end;
+    margin-right:50px;
+    margin-bottom:35px;
+}
+
+.btn {
+    background: #f57f29; /* Оранжевый фон кнопки */
+    border: none;
+    color: white; /* Белый текст */
+    padding: 10px 20px;
+    margin-left: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+}
+
+.btn:hover {
+    background: #e06c00; /* Темнее оранжевый цвет при наведении */
+    color: white;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+    background-color: #f9f9f9; /* Легкий фон таблицы */
+    border-radius: 0px;
+    overflow: hidden;
+}
+
+table th, table td {
+    border: 1px solid #ccc;
+    padding: 10px;
+    text-align: left;
+    color: #333; /* Текст таблицы */
+}
+
+table th {
+    background-color: #dcdcdc; /* Фон заголовков таблицы */
+    font-weight: bold;
+}
+
+input[type="checkbox"] {
+    appearance: none; /* Убираем стандартный стиль чекбокса */
+    width: 30px;
+    height: 30px;
+    border: 2px solid #ccc; /* Граница */
+    border-radius: 5px; /* Скругленные углы */
+    background-color: #fff; /* Белый фон по умолчанию */
+    cursor: pointer;
+    transition: background-color 0.3s, border-color 0.3s;
+}
+
+input[type="checkbox"]:checked {
+    background-color: #f57f29; /* Оранжевый фон */
+    border-color: #f57f29; /* Оранжевая граница */
+}
+.custom-select {
+    height:45px;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #aaa; /* Серый бордер */
+    border-radius: 5px;
+    background-color: #f5f5f5; /* Светлый фон для ввода */
+    color: #333; /* Темный текст */
+}
+
+.custom-select:focus {
+    border-color: #f57f29; /* Оранжевый цвет при фокусе */
+    background-color: #fff; /* Белый фон при фокусе */
+    outline: none; /* Убираем стандартный фокусный контур */
+    box-shadow: 0 0 5px rgba(245, 127, 41, 0.5); /* Тень при фокусе */
+}
+.container {
+    font-family: Arial, sans-serif;
+    background-color: #e8e8e8; /* Светло-серый фон контейнера */
+    width: 80%;
+    margin: 20px auto;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 10px; /* Закругление углов */
+}
+.custom-datetime{
+    height:45px;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #aaa; /* Серый бордер */
+    border-radius: 5px;
+    background-color: #f5f5f5; /* Светлый фон для ввода */
+    color: #333; /* Темный текст */
+}
+
+.custom-datetime:focus {
+    outline: none; /* Убираем стандартный outline */
+    border-color: #f57f29; /* Цвет границы при фокусе */
+    box-shadow: 0 0 5px rgba(245, 127, 41, 0.5); /* Тень при фокусе */
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.column {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.column:last-child {
+    margin-right: 0;
+}

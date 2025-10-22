@@ -1,0 +1,196 @@
+{% extends 'main/layout.html' %}
+
+{% load static %}
+
+{% block extra_styles %}<link rel="stylesheet" href="{% static 'laboratory_xa/css/style.css' %}">{% endblock %}
+
+{% block title %}Лаборатория страница XA{% endblock %}
+
+{% block content %}
+     <div class="container">
+        <section class="titrant-section">
+
+            <div id="fio-data-titr" data-last-fio-titr="{{ last_fio_titr }}"></div>
+
+
+            <h2>Установление T титранта</h2>
+
+            <!-- Форма для титранта -->
+            <form method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="column">
+                        <label>ФИО:</label>
+                        {{ titrant_form_xa.fio }}
+                    </div>
+                    <div class="column">
+                        <label>Титрант:</label>
+                        {{ titrant_form_xa.titrant }}
+                    </div>
+
+                    <!-- V титр 1 и V титр 3 -->
+                    <div class="column">
+                        <div class="sub-row">
+                            <label>V титр 1:</label>
+                            <div class="input-with-checkbox">
+                                <input type="checkbox" name="v_titr_1_checkbox" id="titr1" checked="checked">
+                                {{ titrant_form_xa.v_titr_1 }}
+                            </div>
+                        </div>
+                        <div class="sub-row">
+                            <label>V титр 3:</label>
+                            <div class="input-with-checkbox">
+                                <input type="checkbox" name="v_titr_3_checkbox" id="titr3" checked="checked">
+                                {{ titrant_form_xa.v_titr_3 }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- V титр 2 и V титр 4 -->
+                    <div class="column">
+                        <div class="sub-row">
+                            <label>V титр 2:</label>
+                            <div class="input-with-checkbox">
+                                <input type="checkbox" name="v_titr_2_checkbox" id="titr2" checked="checked">
+                                {{ titrant_form_xa.v_titr_2 }}
+                            </div>
+                        </div>
+                        <div class="sub-row">
+                            <label>V титр 4:</label>
+                            <div class="input-with-checkbox">
+                                <input type="checkbox" name="v_titr_4_checkbox" id="titr4" >
+                                {{ titrant_form_xa.v_titr_4 }}
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="column">
+                        <label>Дата/Время:</label>
+                        {{ titrant_form_xa.user_defined_time }}
+                    </div>
+
+                    <div class="column" id="us_vl">
+                        <label>UV:</label>
+                        {{ titrant_form_xa.used_values }}
+                    </div>
+                </div>
+                <div class="buttons">
+                    <button class="btn" type="submit">Внести</button>
+                </div>
+
+                <input type="hidden" name="t_titr" value="0.00">
+                <input type="hidden" name="form_type" value="titrant_form_xa">
+            </form>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>ФИО</th>
+                        <th>Титрант</th>
+                        <th>T титр</th>
+                        <th>Дата/Время</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for titrant in titrant_list_xa %}
+                    <tr>
+                        <td>{{ titrant.fio }}</td>
+                        <td>{{ titrant.titrant }}</td>
+                        <td>{{ titrant.t_titr }}</td>
+                        <td>{{ titrant.user_defined_time|default_if_none:""|date:"d.m.Y H:i" }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+
+        <selection class="results-selection">
+            <h2>Результаты испытаний</h2>
+            <div id="analysis-init-data"
+                 data-last-fio="{{ last_fio }}"
+                 data-last-probe="{{ last_probe }}">
+            </div>
+            <form id="analysis-form" method="post" data-delete-url="{% url 'delete_analysis_results' %}">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="column">
+                        <label>ФИО:</label>
+                        {{ analysis_form_xa.fio }}
+                    </div>
+                    <div class="column">
+                        <label>Проба:</label>
+                        {{ analysis_form_xa.probe }}
+                    </div>
+                    <div class="column">
+                        <label>Точка отбора:</label>
+                        {{ analysis_form_xa.selection_point }}
+                    </div>
+                    <div class="column">
+                        <label>Время отбора пробы:</label>
+                        {{ analysis_form_xa.user_defined_time }}
+                    </div>
+
+                    <div class="column">
+                        <label>Показатель:</label>
+                        {{ analysis_form_xa.probe_indicator }}
+                    </div>
+
+                    <div class="column">
+                        <label>Ключ:</label>
+                        <input class="custom-input" id="skey" type="password">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column"  style="display: none;">
+                        <input class="custom-input" id="id_comment" readonly="readonly">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column">
+                        <label>Наименование пробы:</label>
+                        <input class="custom-input" id="id_name_probe" readonly="readonly">
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column">
+                        <label>Комментарий:</label>
+                        <input class="custom-input" id="id_comment_for_lab" readonly="readonly">
+                    </div>
+                </div>
+                <div id="analysis-template-fields"></div>
+
+                <div class="buttons-delete">
+                    <div class="delete-controls">
+                        <select id="analyzed-indicators-dropdown" class="custom-select"></select>
+                        <button id="delete-indicator-btn" type="button" class="btn" disabled>Удалить</button>
+                    </div>
+
+                    <button type="button" id="save-analysis-button" class="btn">Сохранить результаты</button>
+                </div>
+
+            </form>
+
+            <table id="analysis-results-table">
+                <thead>
+                <tr>
+                    <th>ФИО</th>
+                    <th>Точка отбора</th>
+                    <th>наименование</th>
+                    <th>Показатель</th>
+                    <th>Значения</th>
+                    <th>Дата/Время</th>
+                </tr>
+                </thead>
+                <tbody>
+
+                </tbody>
+            </table>
+        </selection>
+
+
+    </div>
+    {% block extra_scripts %}
+        {{ block.super }}
+        <script src="{% static 'laboratory_xa/js/script.js' %}"></script>
+    {% endblock %}
+{% endblock %}

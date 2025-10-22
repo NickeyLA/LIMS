@@ -1,0 +1,36 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>{% block title %}{% endblock %}</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="{% static 'viewer/css/viewer_layout.css' %}">
+    {% block extra_styles %}
+    <script src="{% static 'viewer/js/tech_report.js' %}"></script>
+    {% endblock %}
+    <link rel="icon" href="{% static 'viewer/img/Team_Icons-01.png' %}">
+</head>
+<body>
+    <div class="d-flex">
+        <aside class="col-md-3 col-lg-2 p-3 text-light">
+            <img src="https://static.igem.org/mediawiki/2014/c/c3/Team_Icons-01.png">
+            <h3>Навигация</h3>
+            <ul class="list-unstyled">
+                <a href="{% url 'analysis' %}"><li><i class="fa-solid fa-house"></i>Результаты Анализов ХА</li></a>
+                <a href="{% url 'gmc' %}"><li><i class="fa-solid fa-house"></i>Результаты Анализов ГМЦ</li></a>
+                <a href="{% url 'techlab' %}"><li><i class="fa-solid fa-house"></i>Технологическая справка</li></a>
+            </ul>
+        </aside>
+        <main class="custom-main col-md-9 ms-md-auto">
+            {% block content %}
+            {% endblock %}
+        </main>
+    </div>
+{% block extra_scripts %}{% endblock %}
+</body>
+</html>

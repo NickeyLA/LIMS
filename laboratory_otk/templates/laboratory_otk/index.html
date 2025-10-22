@@ -1,0 +1,187 @@
+{% extends 'main/layout.html' %}
+
+{% load static %}
+
+{% block extra_styles %}<link rel="stylesheet" href="{% static 'laboratory_otk/css/style.css' %}">{% endblock %}
+
+{% block title %}Лаборатория страница ОТК{% endblock %}
+
+{% block content %}
+     <div class="container">
+        <section class="prob-section">
+
+            <h2>Регистрация проб</h2>
+
+            <!-- Форма для титранта -->
+            <form method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="column">
+                        <label>ФИО:</label>
+                        {{ probform.fio }}
+                    </div>
+
+                    <div class="column">
+                        <label>Заказчик:</label>
+                        {{ probform.client }}
+                    </div>
+
+                    <div class="column">
+                        <label>Точка отбора:</label>
+                        {{ probform.selection_point }}
+                    </div>
+
+                    <div class="column">
+                        <label>Дата/Время:</label>
+                        {{ probform.user_defined_time }}
+                    </div>
+                </div>
+                <div class="column">
+                    <label>Показатели:</label>
+
+                   <div class="indicator-groups-container">
+                        <div class="indicator-groups-row">
+                            {% for group_name, indicator_list in probform.indicator_groups.items %}
+                                {% if group_name != "C, S анализатор" and group_name != "Физ-мех испытания" and group_name != "ОТК" %}
+                                    <div class="indicator-group">
+                                        <h3>{{ group_name }}</h3>
+                                        <div class="indicator-grid">
+                                            {% if group_name == "РСА" %}
+                                                {% for checkbox in probform.rsa_comment_elements %}
+                                                    <div class="indicator-item">
+                                                        {{ checkbox.tag }}
+                                                        <label for="{{ checkbox.id_for_label }}">{{ checkbox.choice_label }}</label>
+                                                    </div>
+                                                {% endfor %}
+                                            {% endif %}
+                                            {% if group_name == "АЭС ИСП" %}
+                                                {% for checkbox in probform.aes_isp_elements_for_comment %}
+                                                    <div class="indicator-item">
+                                                        {{ checkbox.tag }}
+                                                        <label for="{{ checkbox.id_for_label }}">{{ checkbox.choice_label }}</label>
+                                                    </div>
+                                                {% endfor %}
+                                            {% endif %}
+                                            {% for checkbox in probform.indicators %}
+                                                {% if checkbox.choice_label in indicator_list %}
+                                                    <div class="indicator-item">
+                                                        {{ checkbox.tag }}
+                                                        <label for="{{ checkbox.id_for_label }}">{{ checkbox.choice_label }}</label>
+                                                    </div>
+                                                {% endif %}
+                                            {% endfor %}
+                                        </div>
+                                    </div>
+                                {% endif %}
+                            {% endfor %}
+                            <div class="indicator-groups-column">
+                                {% for group_name, indicator_list in probform.indicator_groups.items %}
+                                    {% if group_name == "C, S анализатор" or group_name == "Физ-мех испытания" or group_name == "ОТК" %}
+                                        <div class="indicator-group">
+                                            <h3>{{ group_name }}</h3>
+                                            <div class="indicator-grid">
+                                                {% for checkbox in probform.indicators %}
+                                                    {% if checkbox.choice_label in indicator_list %}
+                                                        <div class="indicator-item">
+                                                            {{ checkbox.tag }}
+                                                            <label for="{{ checkbox.id_for_label }}">{{ checkbox.choice_label }}</label>
+                                                        </div>
+                                                    {% endif %}
+                                                {% endfor %}
+                                            </div>
+                                        </div>
+                                    {% endif %}
+                                {% endfor %}
+                            </div>
+                        </div>
+                </div>
+
+                <div class="row">
+                    <div class="column" style="display: none;">
+                        {{ probform.comment }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column">
+                        <label>Наименование пробы:</label>
+                        {{ probform.name_probe }}
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="column">
+                        <label>Комментарий:</label>
+                        {{ probform.comment_for_lab }}
+                    </div>
+                </div>
+
+                <div class="buttons">
+                    <input id="count-delete" type="number" name="probe_count" class="count-delete" value="1" min="1" required>
+                    <button class="btn" type="submit">Зарегистрировать пробу</button>
+                </div>
+
+                <input type="hidden" name="form_type" value="prob_form">
+            </form>
+
+            {% if messages %}
+            <div class="messages">
+                {% for message in messages %}
+                <div class="alert alert-{{ message.tags }}">
+                    {{ message }}
+                </div>
+                {% endfor %}
+            </div>
+            {% endif %}
+
+            <div class="buttons-delete">
+                <div class="delete-controls">
+                    <select id="probes-dropdown" class="custom-select">
+                        <option value="">Выберите пробу для удаления</option>
+                        {% for probe in prob_list %}
+                            <option value="{{ probe.id }}">{{ probe.code }}</option>
+                        {% endfor %}
+                    </select>
+                    <button id="delete-probes-btn" type="button" class="btn" disabled>Удалить</button>
+                </div>
+            </div>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>ШИФР</th>
+                        <th>ФИО</th>
+                        <th>Точка отбора</th>
+                        <th>Наименование</th>
+                        <th>Дата/Время</th>
+                        <th>Показатели</th>
+                        <th>Комментарий</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for probe in prob_list %}
+                    <tr>
+                        <td>{{ probe.code }}</td>
+                        <td>{{ probe.fio }}</td>
+                        <td>{{ probe.selection_point }}</td>
+                        <td>{{ probe.name_probe }}</td>
+                        <td>{{ probe.user_defined_time|default_if_none:""|date:"d.m.Y H:i" }}</td>
+                        <td>
+                            {% for indicator in probe.indicators.all %}
+                                <span class="indicator-badge">{{ indicator.indicator_name }}</span>
+                            {% empty %}
+                                —
+                            {% endfor %}
+                        </td>
+                        <td>{{ probe.comment }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+
+    {% block extra_scripts %}
+        <script src="{% static 'laboratory_otk/js/script.js' %}"></script>
+    {% endblock %}
+
+{% endblock %}

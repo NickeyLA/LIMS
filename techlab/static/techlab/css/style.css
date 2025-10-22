@@ -1,0 +1,338 @@
+.container {
+    font-family: Arial, sans-serif;
+    background-color: #e8e8e8; /* Светло-серый фон контейнера */
+    width: 80%;
+    margin: 20px auto;
+    padding: 20px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 10px; /* Закругление углов */
+}
+
+.row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.column {
+    flex: 1;
+    margin-right: 10px;
+}
+
+.column:last-child {
+    margin-right: 0;
+}
+
+.results-block {
+    display: flex; /* Располагаем дочерние элементы в строку */
+    justify-content: space-between; /* Равномерное распределение пространства между блоками */
+    gap: 20px; /* Отступы между блоками */
+    margin-bottom: 20px; /* Отступ снизу */
+}
+
+.measurement {
+    flex: 1; /* Равномерное распределение ширины между блоками */
+    padding: 10px; /* Внутренние отступы */
+    border: 1px solid #ccc; /* Рамка */
+    border-radius: 5px; /* Скругленные углы */
+    background-color: #f4f4f4; /* Фон */
+}
+
+.measurement h3 {
+    margin-bottom: 10px;
+    color: #333; /* Текст заголовка блока */
+}
+
+#id_repeat_container {
+    display: none; /* Скрыть по умолчанию */
+}
+
+.custom-select{
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #aaa; /* Серый бордер */
+    border-radius: 5px;
+    background-color: #f5f5f5; /* Светлый фон для ввода */
+    color: #333; /* Темный текст */
+}
+
+.custom-select {
+    height:45px;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #aaa; /* Серый бордер */
+    border-radius: 5px;
+    background-color: #f5f5f5; /* Светлый фон для ввода */
+    color: #333; /* Темный текст */
+}
+
+.custom-select:focus {
+    border-color: #f57f29; /* Оранжевый цвет при фокусе */
+    background-color: #fff; /* Белый фон при фокусе */
+    outline: none; /* Убираем стандартный фокусный контур */
+    box-shadow: 0 0 5px rgba(245, 127, 41, 0.5); /* Тень при фокусе */
+}
+
+
+.custom-input, textarea {
+    appearance: textfield; /* Только для Firefox */
+    height:45px;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #aaa; /* Серый бордер */
+    border-radius: 5px;
+    background-color: #f5f5f5; /* Светлый фон для ввода */
+    color: #333; /* Темный текст */
+}
+
+
+.custom-input:focus, textarea:focus {
+    border-color: #f57f29; /* Оранж цвет на фокусе */
+    outline: none;
+    background-color: #fff; /* Белый фон на фокусе */
+    box-shadow: 0 0 5px rgba(245, 127, 41, 0.5); /* Тень при фокусе */
+}
+
+.custom-datetime{
+    height:45px;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #aaa; /* Серый бордер */
+    border-radius: 5px;
+    background-color: #f5f5f5; /* Светлый фон для ввода */
+    color: #333; /* Темный текст */
+}
+
+.custom-datetime:focus {
+    outline: none; /* Убираем стандартный outline */
+    border-color: #f57f29; /* Цвет границы при фокусе */
+    box-shadow: 0 0 5px rgba(245, 127, 41, 0.5); /* Тень при фокусе */
+}
+
+#id_v_al_ml:focus {
+    height:45px;
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #aaa; /* Серый бордер */
+    border-radius: 5px;
+    background-color: #f5f5f5; /* Светлый фон для ввода */
+    color: #333; /* Темный текст */
+    box-shadow: 0 0 0px rgba(245, 127, 41, 0.5); /* Тень при фокусе */
+}
+
+#id_titrant_value{
+    display: none;
+}
+
+.custom-input::-webkit-inner-spin-button,
+.custom-input::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+
+/* Стили для чекбоксов */
+.indicator-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 8px;
+    margin-top: 10px;
+}
+
+.indicator-item {
+    display: flex;
+    align-items: center;
+    padding: 6px;
+    border-radius: 4px;
+}
+
+.indicator-item input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+/* Стили для бейджей в таблице */
+.indicator-badge {
+    display: inline-block;
+    padding: 3px 8px;
+    background: #e9ecef;
+    border-radius: 12px;
+    font-size: 14px;
+    margin: 2px;
+}
+
+/* Группа показателей */
+.indicator-group {
+    width: 250px;
+    padding: 20px;              /* ⬅ увеличенные внутренние отступы */
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f4f4f4;
+    font-size: 20px;
+}
+
+/* Ряд с группами */
+.indicator-groups-row {
+    display: flex;
+    flex-wrap: wrap;   /* ✅ добавляем перенос */
+    gap: 25px;         /* расстояние между блоками */
+    font-size: 20px;
+}
+
+/* Группа показателей */
+.indicator-group {
+    width: 300px;      /* фиксированная ширина */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: #f4f4f4;
+    font-size: 16px;
+}
+
+.indicator-group h3 {
+    margin: 0 0 10px 0;
+    padding-bottom: 5px;
+    border-bottom: 1px solid #ddd;
+    font-size: 20px;
+    color: #333;
+}
+
+/* Сетка чекбоксов внутри группы - теперь 2 колонки */
+.indicator-grid {
+    grid-template-columns: 1fr 1fr; /* Две колонки */
+    font-size: 20px;
+}
+
+/* Стили для отдельного чекбокса */
+.indicator-item {
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+}
+
+.indicator-item input[type="checkbox"] {
+    margin-right: 8px;
+}
+
+.indicator-item label {
+    font-size: 16px;
+    font-weight: normal;        /* ⬅ убираем жирность */
+    max-width: 60%;
+}
+
+
+/* Добавляем только эти стили, остальные оставляем как есть */
+.show-all-btn {
+    background-color: #4a6fa5;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 15px;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.show-all-btn:hover {
+    background-color: #3a5a8c;
+}
+
+.disabled-indicator {
+    opacity: 0.6;
+}
+
+.disabled-indicator label {
+    color: #999;
+    cursor: not-allowed;
+}
+
+.show-all-btn {
+    background-color: #4a6fa5;
+    color: white;
+    padding: 8px 15px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 15px;
+    font-size: 14px;
+    margin-bottom: 10px;
+}
+
+.show-all-btn:hover {
+    background-color: #3a5a8c;
+}
+
+
+.messages {
+    font-size: 18px;
+    text-align: center;
+}
+
+.buttons-delete {
+    height:50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom:20px;
+}
+
+.buttons {
+    height:50px;
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom:20px;
+}
+
+.delete-controls {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.count-delete {
+    height:50px;
+    padding: 10px;
+    margin-bottom: 10px;
+    border: 1px solid #aaa; /* Серый бордер */
+    border-radius: 5px;
+    background-color: #f5f5f5; /* Светлый фон для ввода */
+    color: #333; /* Темный текст */
+}
+
+
+
+.count-delete:focus, textarea:focus {
+    border-color: #f57f29; /* Оранж цвет на фокусе */
+    outline: none;
+    background-color: #fff; /* Белый фон на фокусе */
+    box-shadow: 0 0 5px rgba(245, 127, 41, 0.5); /* Тень при фокусе */
+}
+
+.btn {
+    height:50px;
+    background: #f57f29; /* Оранжевый фон кнопки */
+    border: none;
+    color: white; /* Белый текст */
+    padding: 10px 20px;
+    margin-left: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 1em;
+    transition: background-color 0.3s ease;
+    margin-top:20px;
+}
+
+
+.btn:hover {
+    background: #e06c00; /* Темнее оранжевый цвет при наведении */
+    color: white;
+}

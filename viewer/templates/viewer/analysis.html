@@ -1,0 +1,113 @@
+    {% extends 'viewer/viewer_layout.html' %}
+    {% load static %}
+
+    {% block extra_styles %}
+    <link rel="stylesheet" href="{% static 'viewer/css/style.css' %}">
+    {% endblock %}
+
+    {% block title %}Результаты анализов{% endblock %}
+
+    {% block content %}
+    <div class="container">
+        <h2>Результаты анализов</h2>
+
+<form method="get" id="filter-form">
+    {% if stats %}
+    <h3>Статистика по показателю: {{ stats_indicator_name }}</h3>
+    <table>
+        <thead>
+            <tr>
+                <th>Минимум</th>
+                <th>Среднее</th>
+                <th>Максимум</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>{% if stats.min_value is not None %}{{ stats.min_value|floatformat:3 }}{% else %}—{% endif %}</td>
+                <td>{% if stats.avg_value is not None %}{{ stats.avg_value|floatformat:3 }}{% else %}—{% endif %}</td>
+                <td>{% if stats.max_value is not None %}{{ stats.max_value|floatformat:3 }}{% else %}—{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+    {% endif %}
+
+    <div class="row">
+        <div class="column">
+            <label for="id_selection_point">Точка отбора</label>
+            {{ form.selection_point }}
+        </div>
+
+        <div class="column">
+            <label for="id_indicator">Показатель</label>
+            {{ form.indicator }}
+        </div>
+
+        <div class="column">
+            <label for="id_date_from">Дата с</label>
+            {{ form.date_from }}
+        </div>
+
+        <div class="column">
+            <label for="id_date_to">Дата по</label>
+            {{ form.date_to }}
+        </div>
+    </div>
+</form>
+
+<form method="get" action="{% url 'download_analysis_excel' %}">
+    <input type="hidden" name="selection_point" value="{{ form.selection_point.value }}">
+    <input type="hidden" name="indicator" value="{{ form.indicator.value }}">
+    <input type="hidden" name="date_from" value="{{ form.date_from.value }}">
+    <input type="hidden" name="date_to" value="{{ form.date_to.value }}">
+    <div class="buttons">
+        <button type="submit" class="btn">Выгрузить данные</button>
+    </div>
+</form>
+        <table>
+            <thead>
+                <tr>
+                    <th>Шифр пробы</th>
+                    <th>Точка отбора</th>
+                    <th>Наименование</th>
+                    <th>Показатель</th>
+                    <th>Значения</th>
+                    <th>Указ. отбор</th>
+                    <th>Факт. отбор</th>
+                    <th>Факт. анализ</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for probe_group in grouped_analysis %}
+                    {% for row in probe_group %}
+                        <tr>
+                            {% if row.is_first_probe_group_row %}
+                                <td rowspan="{{ row.probe_group_rowspan }}">{{ row.probe_code }}</td>
+                                <td rowspan="{{ row.probe_group_rowspan }}">{{ row.selection_point }}</td>
+                                <td rowspan="{{ row.probe_group_rowspan }}">{{ row.name_probe }}</td>
+                            {% endif %}
+
+                            {% if row.is_first_indicator_row %}
+                                <td rowspan="{{ row.indicator_rowspan }}">{{ row.indicator }}</td>
+                            {% endif %}
+                            <td>{{ row.value_combined }}</td>
+                            <td>{{ row.timestamp_probe_defined }}</td>
+                            <td>{{ row.timestamp_probe_fact }}</td>
+                            <td>{{ row.timestamp_analys_fact }}</td>
+                        </tr>
+                    {% endfor %}
+                {% empty %}
+                    <tr><td colspan="6">Нет данных для отображения</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+<script>
+    // при изменении любого фильтра сабмитим фильтр-форму
+    document.querySelectorAll('#id_selection_point, #id_indicator, #id_date_from, #id_date_to')
+        .forEach(el => el.addEventListener('change', () => {
+            document.getElementById('filter-form').submit();
+        }));
+</script>
+    {% endblock %}

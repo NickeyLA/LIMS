@@ -1,0 +1,15 @@
+.idea/
+
+.venv/
+venv/
+
+*.pyc
+__pycache__/
+*.pyo
+*.pyd
+
+staticfiles/
+media/
+
+.env
+.pytest_cache/

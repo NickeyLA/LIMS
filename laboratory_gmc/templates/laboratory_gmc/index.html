@@ -1,0 +1,199 @@
+{% extends 'main/layout.html' %}
+
+{% load static %}
+
+{% block extra_styles %}<link rel="stylesheet" href="{% static 'laboratory_gmc/css/style.css' %}">{% endblock %}
+
+{% block title %}Лаборатория страница ГМЦ{% endblock %}
+
+{% block content %}
+     <div class="container">
+        <!-- Установление Т титранта -->
+        <section class="titrant-section">
+            <h2>Установление T титранта</h2>
+
+            <!-- Форма для титранта -->
+            <form method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="column">
+                        <label>ФИО:</label>
+                        {{ titrant_form.fio }}
+                    </div>
+                    <div class="column">
+                        <label>Титрант:</label>
+                        {{ titrant_form.titrant }}
+                    </div>
+                    <div class="column">
+                        <label>T титр:</label>
+                        {{ titrant_form.t_titr }}
+                    </div>
+                    <div class="column">
+                        <label>Дата/Время:</label>
+                        {{ titrant_form.user_defined_time }}
+                    </div>
+                </div>
+                <input type="hidden" name="form_type" value="titrant_form">
+
+                <div class="buttons">
+                    <button class="btn" type="submit">Внести</button>
+                </div>
+            </form>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ФИО</th>
+                        <th>Титрант</th>
+                        <th>T титр</th>
+                        <th>Дата/Время</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for titrant in titrant_list %}
+                    <tr data-titrant-name="{{ titrant.titrant }}" data-titrant-id="{{ titrant.id }}" data-t-titr="{{ titrant.t_titr }}">
+                        <td>{{ titrant.fio }}</td>
+                        <td>{{ titrant.titrant }}</td>
+                        <td>{{ titrant.t_titr }}</td>
+                        <td>{{ titrant.user_defined_time|default_if_none:""|date:"d.m.Y H:i" }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+
+
+
+        <!-- Результаты испытаний -->
+        <section class="results-section">
+
+            <div id="fio-data" data-last-fio="{{ values_list.0.fio.id }}"></div>
+            <div id="fio-data-titr" data-last-fio-titr="{{ last_fio_titr }}"></div>
+
+            <h2>Результаты испытаний</h2>
+            <form method="post">
+                {% csrf_token %}
+                <div class="row">
+                    <div class="column">
+                        <label>ФИО:</label>
+                        {{ form.fio }}
+                    </div>
+                    <div class="column">
+                        <label>Точка отбора:</label>
+                        {{ form.selection_point }}
+                    </div>
+                    <div class="column">
+                        <label>Время:</label>
+                        {{ form.user_defined_time }}
+                    </div>
+                    <div class="column">
+                        <div>
+                            <label>Повтор:</label>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 30px;">
+                            <div>
+                                <label for="repeat_ceh">Цех:</label>
+                                <input type="checkbox" id="repeat_ceh">
+                            </div>
+                            <div>
+                                <label for="repeat_lab">Лаборатория:</label>
+                                <input type="checkbox" id="repeat_lab">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="column" id="id_repeat_container" style="display: none;">
+                        <label>ID заменяемой записи:</label>
+                        {{ form.replaced_by }}
+                    </div>
+                    <input type="hidden" id="id_replace_source" name="replace_source">
+
+                    <input type="hidden" id="id_titrant_value_hidden" name="titrant_value_hidden">
+                    <input type="hidden" id="id_t_titr_hidden" name="t_titr_hidden">
+
+                </div>
+
+                <div class="results-block">
+                    <div class="measurement">
+                        <h3>Титриметрия</h3>
+                        <label>Показатель:</label>
+                        {{ form.indicator }}
+                        <label>V al ml:</label>
+                        {{ form.v_al_ml }}
+                        <label>Титрант:</label>
+                        <input type="text" id="id_titrant_display" class="custom-input" readonly>
+                        <label>V титр:</label>
+                        {{ form.v_titr_ml }}
+                        <label>pH:</label>
+                        {{ form.ph }}
+                    </div>
+
+                    <div class="measurement">
+                        <h3>Гравиметрия</h3>
+                        <label>V p-ра мл.:</label>
+                        {{ form.v_ppa_ml }}
+                        <label>m (фильтра г.):</label>
+                        {{ form.m_f_g }}
+                        <label>m (ф + осадок г.):</label>
+                        {{ form.m_f_os }}
+                    </div>
+
+                    <div class="measurement">
+                        <h3>Плотность</h3>
+                        <label>pH:</label>
+                        {{ form.ph_density }}
+                        <label>T, °C:</label>
+                        {{ form.t_oc }}
+                        <label>P г\л:</label>
+                        {{ form.p_gl }}
+                    </div>
+                </div>
+
+                <div class="buttons">
+                    <button class="btn" type="submit">Внести</button>
+                </div>
+            </form>
+
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Проба</th>
+                        <th>pH</th>
+                        <th>V2O5 г/л</th>
+                        <th>H2SO4 г/л</th>
+                        <th>MgSO4 г/л</th>
+                        <th>Взвесь г/л</th>
+                        <th>Усл сухой ост, г/л</th>
+                        <th>повтор</th>
+                        <th>Дата\Время</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for value in values_list  %}
+                    <tr>
+                        <td>{{ value.id }}</td>
+                        <td>{{ value.selection_point }}</td>
+                        <td>{{ value.ph|default_if_none:""|floatformat:2 }}</td>
+                        <td>{{ value.v2o5|default_if_none:""|floatformat:2 }}</td>
+                        <td>{{ value.h2so4|default_if_none:""|floatformat:2 }}</td>
+                        <td>{{ value.mgso4|default_if_none:""|floatformat:2 }}</td>
+                        <td>{{ value.susp|default_if_none:""|floatformat:3 }}</td>  {# Взвесь 0,000 #}
+                        <td>{{ value.dry_residue|default_if_none:""|floatformat:2 }}</td>
+                        <td>
+                            {% if value.replace_source == "lab" %}
+                            {% elif value.replace_source == "workshop" %}
+                                {{ value.replaced_by|default_if_none:"" }}
+                            {% else %}
+                                {{ value.replace_source|default_if_none:"" }}
+                            {% endif %}
+                        </td>
+                        <td>{{ value.user_defined_time|default_if_none:""|date:"d.m.Y H:i" }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    </div>
+    {% block extra_scripts %}
+        <script src="{% static 'laboratory_gmc/js/script.js' %}"></script>
+    {% endblock %}
+{% endblock %}
